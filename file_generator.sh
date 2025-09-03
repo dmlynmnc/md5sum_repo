@@ -52,8 +52,11 @@ EOF
 
 function gg_validate() {
     is_gginstalled="No"
+    ## Extract the mountpoint ex. /u10/dbfs/gg
     dbfs_mountpt=$(df -h | grep "/u10/dbfs/gg" | rev | awk '{print $1}' | rev | sort -u | head -1)
+    ## Extract the dbfs name  ex. dbfs_mount_v01dbgg_phx3cw
     dbfs_name=$($GRID_HOME/bin/crsctl stat res -t | grep dbfs | head -1)
+    ## Extract the node where dbfs is up  ex. d14w31dbgg1
     dbfs_node=$($GRID_HOME/bin/crsctl stat res $dbfs_name |grep STATE  | awk '{print $3}')
     flag=0
     if [[ ! -d "$dbfs_mountpt" ]]; then
@@ -85,7 +88,6 @@ function list_gg_wallet() {
 
 ### list of files
 function summary_print () {
-
 echo -e "Execution date: ${LOG_DATE}" 
 echo -e "Server name   : ${HOST_FQDN}" 
 gg_validate
